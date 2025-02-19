@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ukk_kantin_menyok/pages/splash_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,9 +11,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      initialRoute: '/splash',
       debugShowCheckedModeBanner: false,
-      
+      routes: {'/splash': (context) => SplashScreen(),
+      },
     );
   }
 }
