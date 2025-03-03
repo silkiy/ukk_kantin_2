@@ -66,6 +66,9 @@ flutter:
     - assets/images/welcome_to.png
     - assets/images/banner1.webp
     - assets/images/kantin.jpeg
+    - assets/images/kantin.jpg
+    - assets/images/burger.jpg
+    - assets/images/Jus_Melon.jpg
   
 
   # An image asset can refer to one or more resolution-specific "variants", see
