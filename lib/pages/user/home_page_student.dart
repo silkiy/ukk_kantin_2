@@ -16,7 +16,7 @@ class _HomePageStudentState extends State<HomePageStudent> {
   final List<Map<String, String>> stands = [
     {
       "name": "Stand A",
-      "img": "assets/images/kantin.jpeg",
+      "img": "assets/images/kantin.jpg",
       "jamOperational": "09:00 - 12:00",
       "buka": "setiap hari",
     },
@@ -28,7 +28,7 @@ class _HomePageStudentState extends State<HomePageStudent> {
     },
     {
       "name": "Stand C",
-      "img": "assets/images/kantin.jpeg",
+      "img": "assets/images/kantin.jpg",
       "jamOperational": "09:00 - 12:00",
       "buka": "setiap hari",
     },
@@ -40,7 +40,7 @@ class _HomePageStudentState extends State<HomePageStudent> {
     },
     {
       "name": "Stand A",
-      "img": "assets/images/kantin.jpeg",
+      "img": "assets/images/kantin.jpg",
       "jamOperational": "09:00 - 12:00",
       "buka": "setiap hari",
     },
@@ -77,9 +77,8 @@ class _HomePageStudentState extends State<HomePageStudent> {
               ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.15),
               SizedBox(
-                height: MediaQuery.of(context).size.height,
+                height: MediaQuery.of(context).size.height * 0.5,
                 child: ListView.separated(
-                  shrinkWrap: true,
                   physics: AlwaysScrollableScrollPhysics(),
                   itemCount: stands.length,
                   separatorBuilder: (context, index) => SizedBox(height: 10),
