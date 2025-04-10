@@ -1,7 +1,7 @@
 // ignore_for_file: unused_field
 
 import 'package:flutter/material.dart';
-import 'package:ukk_kantin_menyok/pages/user/activity_page.dart';
+import 'package:ukk_kantin_menyok/pages/stan/recap_penjualan_page.dart';
 import 'package:ukk_kantin_menyok/pages/user/profile_page.dart';
 
 import '../pages/stan/home_page_stan.dart';
@@ -28,7 +28,7 @@ class _BottomNavState extends State<BottomNavBarStan> {
       );
     } else if (index == 1) {
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => const ActivityPage()),
+        MaterialPageRoute(builder: (context) => const RecapPenjualanPage()),
       );
     } else if (index == 2) {
       Navigator.of(context).pushReplacement(
