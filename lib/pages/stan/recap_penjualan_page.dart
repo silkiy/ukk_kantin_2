@@ -12,7 +12,6 @@ class RecapPenjualanPage extends StatefulWidget {
 }
 
 class _RecapPenjualanPageState extends State<RecapPenjualanPage> {
-
   final List<Map<String, String>> activity = [
     {"noPesanan": "002", "noKantin": "1", "status": "Pesanan selesai"},
     {"noPesanan": "018", "noKantin": "5", "status": "Pesanan diterima"},
@@ -44,7 +43,6 @@ class _RecapPenjualanPageState extends State<RecapPenjualanPage> {
                 ),
               ),
             ),
-
           ],
         ),
       ),
@@ -52,4 +50,3 @@ class _RecapPenjualanPageState extends State<RecapPenjualanPage> {
     );
   }
 }
-
