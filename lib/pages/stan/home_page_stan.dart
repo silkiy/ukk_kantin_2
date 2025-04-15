@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ukk_kantin_menyok/components/bottom_nav_bar_stan.dart';
+import 'package:ukk_kantin_menyok/pages/stan/crud/edit_profile_stan_page.dart';
+import 'package:ukk_kantin_menyok/pages/stan/diskon_stan_page.dart';
+import 'package:ukk_kantin_menyok/pages/stan/menu_stan_page.dart';
 
 class HomePageStan extends StatefulWidget {
   const HomePageStan({super.key});
@@ -49,14 +52,24 @@ class _HomePageStanState extends State<HomePageStan> {
                       ],
                     ),
                     const SizedBox(height: 10),
-                    Container(
-                      height: MediaQuery.of(context).size.height * 0.15,
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        image: DecorationImage(
-                          image: AssetImage("assets/images/profil_kantin.jpg"),
-                          fit: BoxFit.cover,
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => EditProfileStanPage(),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        height: MediaQuery.of(context).size.height * 0.15,
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          image: DecorationImage(
+                            image: AssetImage("assets/images/profil_kantin.jpg"),
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                     ),
@@ -73,14 +86,24 @@ class _HomePageStanState extends State<HomePageStan> {
                       ],
                     ),
                     const SizedBox(height: 10),
-                    Container(
-                      height: MediaQuery.of(context).size.height * 0.15,
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        image: DecorationImage(
-                          image: AssetImage("assets/images/simpan_menu.webp"),
-                          fit: BoxFit.cover,
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MenuStanPage(),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        height: MediaQuery.of(context).size.height * 0.15,
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          image: DecorationImage(
+                            image: AssetImage("assets/images/simpan_menu.webp"),
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                     ),
@@ -97,14 +120,24 @@ class _HomePageStanState extends State<HomePageStan> {
                       ],
                     ),
                     const SizedBox(height: 10),
-                    Container(
-                      height: MediaQuery.of(context).size.height * 0.15,
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        image: DecorationImage(
-                          image: AssetImage("assets/images/sale.jpg"),
-                          fit: BoxFit.cover,
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DiskonStanPage(),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        height: MediaQuery.of(context).size.height * 0.15,
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          image: DecorationImage(
+                            image: AssetImage("assets/images/sale.jpg"),
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                     ),
