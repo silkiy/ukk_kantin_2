@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:ukk_kantin_menyok/pages/stan/crud/edit_pelanggan_stan_page.dart';
+import 'package:ukk_kantin_menyok/pages/stan/data_pelanggan_stan_page.dart';
 
 class CardPelangganStan extends StatelessWidget {
   const CardPelangganStan({super.key});
@@ -7,7 +9,12 @@ class CardPelangganStan extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => DataPelangganStanPage()),
+        );
+      },
       child: Container(
         height: MediaQuery.of(context).size.height * 0.16,
         width: MediaQuery.of(context).size.width,
@@ -60,7 +67,14 @@ class CardPelangganStan extends StatelessWidget {
                 child: Row(
                   children: [
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => EditPelangganStanPage(),
+                          ),
+                        );
+                      },
                       child: Container(
                         padding: EdgeInsets.all(6),
                         decoration: BoxDecoration(

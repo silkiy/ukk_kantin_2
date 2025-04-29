@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ukk_kantin_menyok/pages/stan/crud/add_pelanggan_stan_page.dart';
 
 import '../../components/bottom_nav_bar_stan.dart';
 import '../../components/card_pelanggan_stan.dart';
@@ -50,7 +51,12 @@ class _PelangganStanPageState extends State<PelangganStanPage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AddPelangganStanPage()),
+          );
+        },
         backgroundColor: Colors.black,
         child: Icon(Icons.add, color: Colors.white),
       ),
