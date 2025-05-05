@@ -5,11 +5,13 @@ class CardMenu extends StatefulWidget {
   final String name;
   final String price;
   final String img;
+  final Function(int quantity) onQuantityChanged;
   const CardMenu({
     super.key,
     required this.name,
     required this.price,
     required this.img,
+    required this.onQuantityChanged,
   });
 
   @override
@@ -17,21 +19,23 @@ class CardMenu extends StatefulWidget {
 }
 
 class _CardMenuState extends State<CardMenu> {
-  int quantity = 1;
+  int quantity = 0;
 
   void _increment() {
-    setState(() {
-      quantity++;
-    });
-  }
+  setState(() {
+    quantity++;
+  });
+  widget.onQuantityChanged(quantity);
+}
 
-  void _decrement() {
-    if (quantity > 1) {
-      setState(() {
-        quantity--;
-      });
-    }
+void _decrement() {
+  if (quantity > 1) {
+    setState(() {
+      quantity--;
+    });
+    widget.onQuantityChanged(quantity);
   }
+}
 
   @override
   Widget build(BuildContext context) {

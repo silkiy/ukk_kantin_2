@@ -13,20 +13,13 @@ class DetailKantinPage extends StatefulWidget {
 }
 
 class _DetailKantinPageState extends State<DetailKantinPage> {
+
+  List<Map<String, dynamic>> selectedMenu = [];
+
   final List<Map<String, String>> menu = [
     {
       "name": "Jus Melon",
-      "img": "assets/images/jus_melon.jpg",
-      "price": "Rp. 3.000",
-    },
-    {
-      "name": "Burger",
-      "img": "assets/images/burger.jpg",
-      "price": "Rp. 10.000",
-    },
-    {
-      "name": "Jus Melon",
-      "img": "assets/images/jus_melon.jpg",
+      "img": "assets/images/Jus_Melon.jpg",
       "price": "Rp. 3.000",
     },
     {
@@ -38,6 +31,8 @@ class _DetailKantinPageState extends State<DetailKantinPage> {
 
   @override
   Widget build(BuildContext context) {
+    
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -87,10 +82,29 @@ class _DetailKantinPageState extends State<DetailKantinPage> {
                   itemCount: menu.length,
                   separatorBuilder: (context, index) => SizedBox(height: 10),
                   itemBuilder: (context, index) {
+                    final item = menu[index];
                     return CardMenu(
                       name: menu[index]["name"]!,
                       img: menu[index]["img"]!,
                       price: menu[index]["price"]!,
+                      onQuantityChanged: (qty) {
+                        setState(() {
+                          final existingIndex = selectedMenu.indexWhere(
+                            (e) => e['name'] == item['name'],
+                          );
+
+                          if (existingIndex != -1) {
+                            selectedMenu[existingIndex]['quantity'] = qty;
+                          } else {
+                            selectedMenu.add({
+                              'name': item['name'],
+                              'img': item['img'],
+                              'price': item['price'],
+                              'quantity': qty,
+                            });
+                          }
+                        });
+                      },
                     );
                   },
                 ),
@@ -106,7 +120,9 @@ class _DetailKantinPageState extends State<DetailKantinPage> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => CheckoutPage()),
+            MaterialPageRoute(builder: (context) => CheckoutPage(
+              selectedMenu: selectedMenu
+            )),
           );
         },
         child: Icon(

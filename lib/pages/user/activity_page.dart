@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../components/bottom_nav_bar.dart';
 import '../../components/card_activity.dart';
+import '../../helpers/checkout_database_helper.dart';
 
 class ActivityPage extends StatefulWidget {
   const ActivityPage({super.key});
@@ -14,22 +15,20 @@ class ActivityPage extends StatefulWidget {
 class _ActivityPageState extends State<ActivityPage> {
   String selectedBulan = "Jan";
 
-  final List<Map<String, String>> activity = [
-    {
-      "noPesanan": "002",
-      "noKantin": "1",
-      "status": "Pesanan selesai",
-    },{
-      "noPesanan": "018",
-      "noKantin": "5",
-      "status": "Pesanan diterima",
-    },{
-      "noPesanan": "098",
-      "noKantin": "2",
-      "status": "Pesanan diproses",
-    },
-    
-  ];
+  List<Map<String, dynamic>> activity = [];
+  @override
+  void initState() {
+    super.initState();
+    _loadCheckoutData();
+  }
+
+  // Function to load data from the database
+  Future<void> _loadCheckoutData() async {
+    final data = await DatabaseHelper.instance.getCheckoutData();
+    setState(() {
+      activity = data;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -171,9 +170,9 @@ class _ActivityPageState extends State<ActivityPage> {
                 separatorBuilder: (context, index) => SizedBox(height: 10),
                 itemBuilder: (context, index) {
                   return CardActivity(
-                    noPesanan: activity[index]["noPesanan"]!,
-                    noKantin: activity[index]["noKantin"]!,
-                    status: activity[index]["status"]!,
+                    noPesanan: activity[index]["noPesanan"].toString(),
+                    noKantin: activity[index]["noKantin"].toString(),
+                    status: activity[index]["status"].toString(),
                   );
                 },
               ),

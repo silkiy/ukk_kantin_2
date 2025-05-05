@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart';
 import 'package:ukk_kantin_menyok/pages/splash_screen.dart';
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await deleteDatabase(await getDatabasesPath().then((path) => join(path, 'checkout.db')));
   runApp(const MyApp());
 }
 

@@ -1,24 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import '../../components/card_detail_pesanan_checkout.dart';
 import '../../components/card_user_checkout.dart';
+import '../../helpers/checkout_database_helper.dart';
 
 class CheckoutPage extends StatefulWidget {
-  const CheckoutPage({super.key});
+  final List<Map<String, dynamic>> selectedMenu;
+  const CheckoutPage({super.key, required this.selectedMenu});
 
   @override
   State<CheckoutPage> createState() => _CheckoutPageState();
 }
 
 class _CheckoutPageState extends State<CheckoutPage> {
+  late List<Map<String, dynamic>> _menuList;
   String selectedDiscount = "0%";
 
-  double totalHarga = 29900;
+  double hitungTotalHarga() {
+    double total = 0;
+    for (var item in _menuList) {
+      final qty = item['quantity'] ?? 1;
+      final priceString = item['price'].toString().replaceAll(
+        RegExp(r'[^0-9]'),
+        '',
+      );
+      final price = int.tryParse(priceString) ?? 0;
+      total += qty * price;
+    }
+    return total;
+  }
 
   double hitungTotalSetelahDiskon() {
     double diskon = double.parse(selectedDiscount.replaceAll("%", "")) / 100;
-    return totalHarga - (totalHarga * diskon);
+    return hitungTotalHarga() * (1 - diskon);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _menuList = List<Map<String, dynamic>>.from(widget.selectedMenu);
   }
 
   @override
@@ -38,9 +57,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
         ),
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios, color: Colors.black),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+          onPressed: () => Navigator.pop(context),
         ),
       ),
       body: SingleChildScrollView(
@@ -50,11 +67,62 @@ class _CheckoutPageState extends State<CheckoutPage> {
             horizontal: MediaQuery.of(context).size.width * 0.03,
           ),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CardUserCheckout(),
               SizedBox(height: 40),
-              CardDetailPesananCheckout(),
+              Text(
+                "Detail Pesanan",
+                style: GoogleFonts.poppins(
+                  fontSize: MediaQuery.of(context).size.width * 0.045,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+              SizedBox(height: 10),
+              ..._menuList.asMap().entries.map((entry) {
+                final index = entry.key;
+                final item = entry.value;
+                final qty = item['quantity'] ?? 1;
+                final priceString = item['price'].toString().replaceAll(
+                  RegExp(r'[^0-9]'),
+                  '',
+                );
+                final price = int.tryParse(priceString) ?? 0;
+                final total = qty * price;
+
+                return ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  title: Text(
+                    "${item['name']}",
+                    style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
+                  ),
+                  subtitle: Text(
+                    "x$qty • Rp. $price",
+                    style: GoogleFonts.poppins(fontSize: 12),
+                  ),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        "Rp. $total",
+                        style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.delete, color: Colors.red),
+                        onPressed: () {
+                          setState(() {
+                            _menuList.removeAt(index);
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                );
+              }).toList(),
               SizedBox(height: 20),
+
+              // Total awal
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 50),
                 child: Container(
@@ -65,7 +133,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   ),
                   child: Center(
                     child: Text(
-                      "TOTAL :   Rp. 29,900. ",
+                      "TOTAL :   Rp. ${hitungTotalHarga().toStringAsFixed(0)}",
                       style: GoogleFonts.poppins(
                         fontSize: MediaQuery.of(context).size.width * 0.035,
                         fontWeight: FontWeight.w600,
@@ -75,7 +143,10 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   ),
                 ),
               ),
+
               SizedBox(height: 20),
+
+              // Dropdown diskon
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 35),
                 child: Container(
@@ -99,9 +170,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                       DropdownButton<String>(
                         value: selectedDiscount,
                         items:
-                            ["0%", "10%", "20%", "30%", "50%"].map((
-                              String value,
-                            ) {
+                            ["0%", "10%", "20%", "30%", "50%"].map((value) {
                               return DropdownMenuItem<String>(
                                 value: value,
                                 child: Text(
@@ -119,6 +188,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                         onChanged: (String? newValue) {
                           setState(() {
                             selectedDiscount = newValue!;
+                            print("Diskon yang dipilih: $selectedDiscount");
                           });
                         },
                         underline: SizedBox(),
@@ -153,7 +223,6 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 color: Colors.white,
               ),
             ),
-
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.white,
@@ -162,7 +231,47 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   borderRadius: BorderRadius.circular(15),
                 ),
               ),
-              onPressed: () {},
+              onPressed: () async {
+                if (_menuList.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Tidak ada menu yang dipilih!')),
+                  );
+                  return;
+                }
+
+                print("Diskon yang dipilih sebelum checkout: $selectedDiscount");
+                final orderNumber =
+                    'ORD${DateTime.now().millisecondsSinceEpoch}';
+
+                for (var item in _menuList) {
+                  final qty = item['quantity'] ?? 1;
+                  final priceString = item['price'].toString().replaceAll(
+                    RegExp(r'[^0-9]'),
+                    '',
+                  );
+                  final price = int.tryParse(priceString) ?? 0;
+                  final total = qty * price;
+
+                  Map<String, dynamic> checkoutData = {
+                    'noPesanan': orderNumber,
+                    'itemName': item['name'], // Gunakan nama dari item
+                    'quantity': qty,
+                    'price': price, // Kirim harga per item
+                    'totalPrice': total, // Kirim total per item (harga * qty)
+                    'discount': selectedDiscount, // Kirim diskon yang dipilih
+                    'status': 'Pesanan diproses',
+                  };
+
+                  await DatabaseHelper.instance.insertCheckoutData(
+                    checkoutData,
+                  );
+                  print("Diskon: $selectedDiscount");
+                }
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Checkout berhasil disimpan!')),
+                );
+              },
               child: Text(
                 "CHECKOUT",
                 style: GoogleFonts.poppins(

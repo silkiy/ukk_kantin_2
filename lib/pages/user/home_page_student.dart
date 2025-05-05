@@ -26,24 +26,6 @@ class _HomePageStudentState extends State<HomePageStudent> {
       "jamOperational": "09:00 - 12:00",
       "buka": "setiap hari",
     },
-    {
-      "name": "Stand C",
-      "img": "assets/images/kantin.jpg",
-      "jamOperational": "09:00 - 12:00",
-      "buka": "setiap hari",
-    },
-    {
-      "name": "Stand D",
-      "img": "assets/images/kantin.jpeg",
-      "jamOperational": "09:00 - 12:00",
-      "buka": "setiap hari",
-    },
-    {
-      "name": "Stand A",
-      "img": "assets/images/kantin.jpg",
-      "jamOperational": "09:00 - 12:00",
-      "buka": "setiap hari",
-    },
   ];
 
   @override
